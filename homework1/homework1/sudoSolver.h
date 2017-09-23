@@ -1,14 +1,20 @@
 #pragma once
+#include <fstream>
 class sudoSolver
 {
 public:
 	sudoSolver(int matrix[9][9]);
 	~sudoSolver();
-	 void solve(int index);
+	 void solve(int index,std::fstream *outfile);
 	 bool canFill(int i,int j,int num);
-	 /*void print(int matrix[9][9]);*/
+	 static void print(int matrix[9][9]);
+	 void initprocess();
+	 void fill(std::fstream *outfile);
 	 bool getSolved();
+	 void fillin(int i,int j,int num);
+	 void erase(int i,int j,int num);
 private:
+
 	int matrix[9][9];
 	int rchoice[81];
 	int cchoice[81];

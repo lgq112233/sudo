@@ -55,8 +55,10 @@ int main(int argc,char* argv[])
 					std::cout << "cannot smaller than 1" << std::endl;
 					break;
 				}
+				std::fstream outfile("sudoku.txt", std::ios::out);
 				sudoCreate creater = sudoCreate(num);
-				creater.choose(0, 0);
+				creater.choose(0, 0,&outfile);
+				outfile.close();
 			}
 			break;
 		case's':
@@ -71,30 +73,51 @@ int main(int argc,char* argv[])
 			break;
 		}
 	}
+	/*
+	TODO:测试getline()函数的用法。
+	std::fstream outfile("sudoku.txt");
+	int count = 2;
+	char line[18];
+	while ((count--) > 0) {
+		outfile.getline(line,sizeof(line));
+		std::cout << line << std::endl;
+		int i = 0;
+		while (i < 18)
+		{
+			std::cout << line[i] << "end" << std::endl;
+			if (i == 17) {
+				std::cout << (line[i] == '\0' )<< std::endl;
+			}
+			i++;
+		}
+		std::cout << '\0' << "输出反斜杠0" << std::endl;
+	}*/
 	return 0;
 }
 
 
 
 void readAndSolve(char *filepath) {
-	std::fstream question;
-	question.open(filepath, std::ios::in);
-	char c;
-
-	while (!question.eof()) {
-		for (int i = 0; i < 81; i++) {
-			question >> c;
-			matrix[i / 9][i % 9] = c - '0';
+	FILE* f = fopen(filepath,"r");
+	std::fstream result("sudoku.txt",std::ios::out);
+	int temp;
+	int i = 0;
+	while (fscanf(f,"%d",&temp)!=EOF) {
+		matrix[i / 9][i % 9] = temp;
+		i++;
+		if (i == 81) {
+			//print(matrix);
+			sudoSolver* solver = new sudoSolver(matrix);
+			//std::cout << "ok" << std::endl;
+			solver->fill(&result);
+			if (!solver->getSolved()) {
+				std::cout << "no solution" << std::endl;
+			}
+			delete solver;
+			i = 0;
 		}
-		//print(matrix);
-		sudoSolver* solver = new sudoSolver(matrix);
-		//std::cout << "ok" << std::endl;
-		solver->solve(0);
-		if (!solver->getSolved()) {
-			std::cout << "no solution" << std::endl;
-		}
-		delete solver;
 	}
+	result.close();
 }
 
 void print(int matrix[9][9]) {

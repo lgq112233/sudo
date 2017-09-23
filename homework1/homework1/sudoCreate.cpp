@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "sudoCreate.h"
 #include "sudo.h"
+
 sudoCreate::sudoCreate(int num)
 {
 	this->num = num;
@@ -18,7 +19,7 @@ sudoCreate::sudoCreate(int num)
 sudoCreate::~sudoCreate()
 {}
 
-int sudoCreate::  choose(int index, int increment) {
+int sudoCreate::  choose(int index, int increment,std::fstream *outfile) {
 	//print(this->matrix);
 	int  num = 3 + increment;
 	int row, col;
@@ -31,25 +32,25 @@ int sudoCreate::  choose(int index, int increment) {
 			if (index == 8) {
 				if (increment == 8) {
 					//搜索成功打印结果
-					sudo::print(this->matrix);
+					sudo::print(this->matrix,outfile);
 					count++;
 					if (count == this->num) {
 						exit(0);
 					}
 				}
 				else {
-					choose(0, increment + 1);
+					choose(0, increment + 1,outfile);
 				}
 			}
 			else {
-				choose(index + 1, increment);
+				choose(index + 1, increment,outfile);
 			}
 			this->matrix[row][col] = 0;	//恢复矩阵
 		}
 	}
 	return 0;
 }
-void sudoCreate:: print(int matrix[9][9]) {
+/*void sudoCreate:: print(int matrix[9][9]) {
 
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -58,9 +59,5 @@ void sudoCreate:: print(int matrix[9][9]) {
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-}
-
-
-
- 
+}*/
 

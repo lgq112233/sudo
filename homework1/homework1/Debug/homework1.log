@@ -2,15 +2,13 @@
 f:\myrepo\homework1\homework1\stdafx.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 f:\myrepo\homework1\homework1\stdafx.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 f:\myrepo\homework1\homework1\targetver.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+f:\myrepo\homework1\homework1\sudo.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   sudoSolver.cpp
 f:\myrepo\homework1\homework1\sudosolver.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-f:\myrepo\homework1\homework1\sudo.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   sudoku.cpp
 f:\myrepo\homework1\homework1\sudoku.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   sudoCreate.cpp
-f:\myrepo\homework1\homework1\sudo.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   sudo.cpp
-f:\myrepo\homework1\homework1\sudo.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   正在生成代码...
   homework1.vcxproj -> F:\myrepo\homework1\Debug\sudoku.exe
   homework1.vcxproj -> F:\myrepo\homework1\Debug\sudoku.pdb (Partial PDB)

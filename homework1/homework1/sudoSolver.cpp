@@ -5,6 +5,12 @@
 extern int index[9][9];
 extern int gridindex[9][9];
 
+void sudoSolver::fill(std::fstream *outfile)
+{
+	this->initprocess();
+	this->solve(0, outfile);
+}
+
 sudoSolver::sudoSolver(int matrix[9][9])
 {
 	//一开始忘了初始化maxempty了
@@ -28,17 +34,42 @@ sudoSolver::sudoSolver(int matrix[9][9])
 
 }
 
+void sudoSolver::initprocess() {
+	bool flag = true;
+	while (flag)
+	{
+		flag = false;
+		for (int i = 0; i < this->maxempty; i++) {
+			int row = this->rchoice[i];
+			int col = this->cchoice[i];
+			int count = 0;
+			int num = 0;
+			for (int j = 1; j <= 9; j++) {
+				if (canFill(row, col, j))
+				{
+					count += 1;
+					num = j;
+				}
+			}
+			if (count == 1)
+			{
+				fillin(row, col, num);
+				flag = true;
+			}
+		}
+	}
+}
 
 sudoSolver::~sudoSolver()
 {
 }
-void sudoSolver:: solve(int arrayindex) {
+void sudoSolver:: solve(int arrayindex,std::fstream *outfile) {
 
 	if (this->solved == true)
 		return;
 	if (arrayindex > maxempty - 1) {
 		this->solved = true;
-		sudo::print(this->matrix);
+		sudo::print(this->matrix,outfile);
 		return;
 	}
 	int i = rchoice[arrayindex];
@@ -50,21 +81,29 @@ void sudoSolver:: solve(int arrayindex) {
 		//std::cout << canInsertInGrid(i, j, k) << canInsert(i, j, k) << std::endl;
 		if (canFill(i, j, k)) {
 			//std::cout << index << std::endl;
-			matrix[i][j] = k;
-			this->line[i][k] = false;
-			this->column[j][k] = false;
-			this->grid[index[i][j]][k] = false;
+			this->fillin(i, j, k);
 
-			solve(arrayindex + 1);
-			matrix[i][j] = 0;
-			this->line[i][k] = true;
-			this->column[j][k] = true;
-			this->grid[index[i][j]][k] = true;
+			solve(arrayindex + 1,outfile);
+			this->erase(i, j, k);
 			//std::cout << index << std::endl;
 			//注意是index==maxempty-1
 		}
 	}
 
+}
+void sudoSolver::fillin(int i, int j, int num)
+{
+	this->matrix[i][j] = num;
+	this->line[i][num] = false;
+	this->column[j][num] = false;
+	this->grid[index[i][j]][num] = false;
+}
+void sudoSolver::erase(int i,int j,int num)
+{
+	this->matrix[i][j] = 0;
+	this->line[i][num] = true;
+	this->column[j][num] = true;
+	this->grid[index[i][j]][num] = true;
 }
 bool sudoSolver::canFill(int i, int j, int num)
 {
@@ -73,7 +112,7 @@ bool sudoSolver::canFill(int i, int j, int num)
 bool sudoSolver::getSolved() {
 	return this->solved;
 }
-/*void sudoSolver:: print(int matrix[9][9]) {
+ void sudoSolver:: print(int matrix[9][9]) {
 
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -82,4 +121,5 @@ bool sudoSolver::getSolved() {
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-}*/
+}
+ 
