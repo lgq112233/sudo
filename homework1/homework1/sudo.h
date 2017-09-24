@@ -23,20 +23,20 @@ private:
 			return 1;
 
 		}
-		static void print( int matrix[9][9],std::fstream* outfile) {
+		static void print( int matrix[9][9],FILE* fp) {
 			/*控制台的sudoku.exe的生成的文件的位置和ide里运行生成文件的位置不一样！*/
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 9; j++) {
-					*outfile << matrix[i][j] ;
+					fprintf(fp,"%d",matrix[i][j]);
 					if (j != 8)
-						*outfile << " ";
+						fprintf(fp, " ");
 					//行末无空格！！
 					//std::cout << matrix[i][j] << " ";
 				}
-				*outfile << std::endl;
+				fprintf(fp, "\n");
 				//std::cout << std::endl;
 			}
-			*outfile << std::endl;
+			fprintf(fp, "\n");
 			//std::cout << std::endl;
 		}
 

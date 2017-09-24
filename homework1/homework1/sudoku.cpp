@@ -1,6 +1,6 @@
 // homework1.cpp: 定义控制台应用程序的入口点。
 //
-
+//一开始遇到明明已经定义了数组，但是还是说这个数组没定义是因为中文注释
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
@@ -10,8 +10,12 @@
 #define MAX 1000000
 
 int matrix[9][9] = { 0 };
+
 int index[9][9] = { 0 };
 int gridindex[9][9] = { 0 };
+
+int rowarray[9][9] = { 0 };
+int colarray[9][9] = { 0 };
 
 void readAndSolve(char* filepath);
 void print(int matrix[9][9]);
@@ -55,10 +59,10 @@ int main(int argc,char* argv[])
 					std::cout << "cannot smaller than 1" << std::endl;
 					break;
 				}
-				std::fstream outfile("sudoku.txt", std::ios::out);
+				FILE* fp = fopen("sudoku.txt", "w");
 				sudoCreate creater = sudoCreate(num);
-				creater.choose(0, 0,&outfile);
-				outfile.close();
+				creater.choose(0, 0,fp);
+				fclose(fp);
 			}
 			break;
 		case's':
@@ -99,7 +103,7 @@ int main(int argc,char* argv[])
 
 void readAndSolve(char *filepath) {
 	FILE* f = fopen(filepath,"r");
-	std::fstream result("sudoku.txt",std::ios::out);
+	FILE *fp = fopen("sudoku.txt", "w");
 	int temp;
 	int i = 0;
 	while (fscanf(f,"%d",&temp)!=EOF) {
@@ -109,7 +113,7 @@ void readAndSolve(char *filepath) {
 			//print(matrix);
 			sudoSolver* solver = new sudoSolver(matrix);
 			//std::cout << "ok" << std::endl;
-			solver->fill(&result);
+			solver->fill(fp);
 			if (!solver->getSolved()) {
 				std::cout << "no solution" << std::endl;
 			}
@@ -117,7 +121,7 @@ void readAndSolve(char *filepath) {
 			i = 0;
 		}
 	}
-	result.close();
+	fclose(fp);
 }
 
 void print(int matrix[9][9]) {
@@ -135,7 +139,9 @@ void init()
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			index[i][j] = (i / 3) * 3 + j / 3;
-			gridindex[i][j]= (i % 3) * 3 + j % 3;
+			rowarray[i][j] = (i / 3) * 3 + j / 3;
+			gridindex[i][j] = (i % 3) * 3 + j % 3;
+			colarray[i][j] = (i % 3) * 3 + j % 3;
 		}
 	}
 }

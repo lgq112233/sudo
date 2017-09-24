@@ -5,11 +5,10 @@ class sudoSolver
 public:
 	sudoSolver(int matrix[9][9]);
 	~sudoSolver();
-	 void solve(int index,std::fstream *outfile);
+	 void solve(int index,FILE* fp);
 	 bool canFill(int i,int j,int num);
 	 static void print(int matrix[9][9]);
-	 void initprocess();
-	 void fill(std::fstream *outfile);
+	 void fill(FILE* fp);
 	 bool getSolved();
 	 void fillin(int i,int j,int num);
 	 void erase(int i,int j,int num);
