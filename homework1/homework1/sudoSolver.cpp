@@ -2,12 +2,13 @@
 #include "sudoSolver.h"
 #include "sudo.h"
 
-extern int index[9][9];
-extern int gridindex[9][9];
-
-void sudoSolver::fill(FILE* fp)
+extern int rowarray[9][9];
+extern void print(int *matrix);
+extern int *matrixarray[1000000];
+extern int count;
+void sudoSolver::fill()
 {
-	this->solve(0, fp);
+	this->solve(0);
 }
 
 sudoSolver::sudoSolver(int matrix[9][9])
@@ -17,17 +18,19 @@ sudoSolver::sudoSolver(int matrix[9][9])
 	this->solved = false;
 	for(int i=0;i<9;i++)
 		for (int j = 0; j < 9; j++) {
-			int num = matrix[i][j];
-			this->matrix[i][j] = num;
+			this->matrix[i][j] = matrix[i][j];
+			this->line[i][j] = this->column[i][j] = this->grid[i][j] = true;
+		}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			int num = this->matrix[i][j];
 			if (num != 0) {
 				this->line[i][num - 1] = false;
 				this->column[j][num - 1] = false;
-				this->grid[index[i][j]][num - 1] = false;
-			}
-			else {
-				this->line[i][num-1] = this->column[i][num-1] = this->grid[i][num-1] = true;
+				this->grid[rowarray[i][j]][num - 1] = false;
 			}
 		}
+	}
 	bool flag = true;
 	while (flag)
 	{
@@ -68,13 +71,18 @@ sudoSolver::sudoSolver(int matrix[9][9])
 sudoSolver::~sudoSolver()
 {
 }
-void sudoSolver:: solve(int arrayindex,FILE* fp) {
+void sudoSolver:: solve(int arrayindex) {
 
 	if (this->solved == true)
 		return;
 	if (arrayindex > maxempty - 1) {
 		this->solved = true;
-		sudo::print(this->matrix,fp);
+		int* newmatrix = (int *)malloc(81 * sizeof(int));
+		for (int i = 0; i < 9; i++)
+			for (int j = 0; j < 9; j++)
+				newmatrix[i * 9 + j] = this->matrix[i][j];
+		matrixarray[count] = newmatrix;
+		count++;
 		return;
 	}
 	int i = rchoice[arrayindex];
@@ -83,7 +91,7 @@ void sudoSolver:: solve(int arrayindex,FILE* fp) {
 	for (int k = 1; k <= 9; k++) {
 		if (canFill(i, j, k)) {
 			this->fillin(i, j, k);
-			solve(arrayindex + 1,fp);
+			solve(arrayindex + 1);
 			this->erase(i, j, k);
 		}
 	}
@@ -94,23 +102,23 @@ void sudoSolver::fillin(int i, int j, int num)
 	this->matrix[i][j] = num;
 	this->line[i][num-1] = false;
 	this->column[j][num-1] = false;
-	this->grid[index[i][j]][num-1] = false;
+	this->grid[rowarray[i][j]][num-1] = false;
 }
 void sudoSolver::erase(int i,int j,int num)
 {
 	this->matrix[i][j] = 0;
 	this->line[i][num-1] = true;
 	this->column[j][num-1] = true;
-	this->grid[index[i][j]][num-1] = true;
+	this->grid[rowarray[i][j]][num-1] = true;
 }
 bool sudoSolver::canFill(int i, int j, int num)
 {
-	return matrix[i][j]==0&&line[i][num-1] && column[j][num-1] && grid[index[i][j]][num-1];
+	return matrix[i][j]==0&&line[i][num-1] && column[j][num-1] && grid[rowarray[i][j]][num-1];
 }
 bool sudoSolver::getSolved() {
 	return this->solved;
 }
- void sudoSolver:: print(int matrix[9][9]) {
+ /*void sudoSolver:: print(int matrix[9][9]) {
 
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -119,5 +127,5 @@ bool sudoSolver::getSolved() {
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-}
+}*/
  

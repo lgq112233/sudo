@@ -1,6 +1,7 @@
 // homework1.cpp: 定义控制台应用程序的入口点。
 //
-//一开始遇到明明已经定义了数组，但是还是说这个数组没定义是因为中文注释
+//一开始遇到明明已经定义了数组，但是还是说这个数组没定义或者其他很奇怪的
+//问题是因为中文注释
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
@@ -9,22 +10,29 @@
 
 #define MAX 1000000
 
-int matrix[9][9] = { 0 };
 
-int index[9][9] = { 0 };
-int gridindex[9][9] = { 0 };
-
+int *matrixarray[MAX];	
+int count = 0;
+int array[8] = { 1, 2, 4, 5, 6, 7, 8, 9 };
+/*存储最后需要往文件中写的所有终局*/
 int rowarray[9][9] = { 0 };
 int colarray[9][9] = { 0 };
+/*不知道起什么名字好...*/
+/*从（行，列）到（所在九宫格是第几个，九宫格内的第几个位置）的转换（后者向前者转换
+是相同的计算式子），提前记录对应的转换值，在用的时候就不用再计算了*/
+
+void init();
+/*这个函数就是计算上面这两个数组的*/
 
 void readAndSolve(char* filepath);
-void print(int matrix[9][9]);
-void init();
+void print(int *matrix);
+
 int main(int argc,char* argv[])
 {
 	int num=0;
 	char c;
 	init();
+	/*用于生成全排列的数组*/
 	while (*++argv != NULL&&**argv == '-')
 	{
 		switch (*++*argv)
@@ -61,8 +69,11 @@ int main(int argc,char* argv[])
 				}
 				FILE* fp = fopen("sudoku.txt", "w");
 				sudoCreate creater = sudoCreate(num);
-				creater.choose(0, 0,fp);
+				//creater.choose(0,0,fp);
+				creater.generateMatrix(array, 0, 8);
+				sudo::print(matrixarray, num);
 				fclose(fp);
+
 			}
 			break;
 		case's':
@@ -79,41 +90,40 @@ int main(int argc,char* argv[])
 	}
 	/*
 	TODO:测试getline()函数的用法。
-	std::fstream outfile("sudoku.txt");
-	int count = 2;
-	char line[18];
-	while ((count--) > 0) {
-		outfile.getline(line,sizeof(line));
-		std::cout << line << std::endl;
-		int i = 0;
-		while (i < 18)
-		{
-			std::cout << line[i] << "end" << std::endl;
-			if (i == 17) {
-				std::cout << (line[i] == '\0' )<< std::endl;
-			}
-			i++;
-		}
-		std::cout << '\0' << "输出反斜杠0" << std::endl;
 	}*/
 	return 0;
 }
-
-
-
+/*****************************************************
+Description:
+	根据读入的文件路径，读取该文件内的数独问题，并解决
+Input:
+	文件路径的字符指针
+Output:
+	None
+Require:
+	None
+Concrete Function:
+	1.如果该路径下打开文件失败，则输出错误信息并结束程序
+	2.根据路径打开文件-》读取好一个矩阵-》解决它
+	直到文件结束
+******************************************************/
 void readAndSolve(char *filepath) {
-	FILE* f = fopen(filepath,"r");
-	FILE *fp = fopen("sudoku.txt", "w");
+	FILE* f;  
+	FILE *fp;
+	if ((f = fopen(filepath, "r")) == NULL || (fp = fopen("sudoku.txt", "w")) == NULL)
+	{
+		printf("cannot open file\n");
+		exit(0);
+	}
+	int matrix[9][9] = { 0 };
 	int temp;
 	int i = 0;
 	while (fscanf(f,"%d",&temp)!=EOF) {
 		matrix[i / 9][i % 9] = temp;
 		i++;
 		if (i == 81) {
-			//print(matrix);
 			sudoSolver* solver = new sudoSolver(matrix);
-			//std::cout << "ok" << std::endl;
-			solver->fill(fp);
+			solver->fill();
 			if (!solver->getSolved()) {
 				std::cout << "no solution" << std::endl;
 			}
@@ -121,14 +131,16 @@ void readAndSolve(char *filepath) {
 			i = 0;
 		}
 	}
+	sudo::print(matrixarray,count);
 	fclose(fp);
+	fclose(f);
 }
 
-void print(int matrix[9][9]) {
+void print(int *matrix) {
 
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			std::cout << matrix[i][j] << " ";
+			std::cout << matrix[i*9+j] << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -138,9 +150,7 @@ void init()
 {
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			index[i][j] = (i / 3) * 3 + j / 3;
 			rowarray[i][j] = (i / 3) * 3 + j / 3;
-			gridindex[i][j] = (i % 3) * 3 + j % 3;
 			colarray[i][j] = (i % 3) * 3 + j % 3;
 		}
 	}
