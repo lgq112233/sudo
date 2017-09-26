@@ -3,7 +3,7 @@
 class sudoCreate
 {
 public:
-	sudoCreate(int num);
+	sudoCreate(int num,int **matrixarray);
 	~sudoCreate();
 	/*int  choose(int index, int increment,FILE* fp);
 	void print(int *matrix);
@@ -12,10 +12,11 @@ public:
 	void erase(int i,int j,int num);*/
 	void getMatrix(int array[8]);
 	void generateMatrix(int *array,int i,int n);
-	void swap(int *a,int *b);
+	static void swap(int *a,int *b);
 private:
 	int num;
 	int count;
+	int **matrixarray;
 	int matrix[9][9];
 	bool line[9][9];
 	bool column[9][9];

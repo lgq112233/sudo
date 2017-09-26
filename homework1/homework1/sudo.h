@@ -10,19 +10,6 @@ private:
 	public:
 		sudo();
 		~sudo();
-		static int canInsert(int row, int col, int num,int matrix[9][9]) {
-			//判断这个位置还没填入数字
-			if (matrix[row][col] != 0)
-				return 0;
-			//行和列
-			for (int j = 0; j < 9; j++) {
-				if (matrix[j][col] == num || matrix[row][j] == num) {
-					return 0;
-				}
-			}
-			return 1;
-
-		}
 		static void print(int *matrixarray[],int max)
 		{	
 			char *str = (char *)malloc(max * 163*sizeof(char)+1);

@@ -3,12 +3,9 @@ f:\myrepo\homework1\unittest1\stdafx.cpp : warning C4819: 该文件包含不能�
 f:\myrepo\homework1\unittest1\stdafx.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 f:\myrepo\homework1\unittest1\targetver.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   unittest1.cpp
-f:\myrepo\homework1\unittest1\unittest1.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 f:\myrepo\homework1\homework1\stdafx.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 f:\myrepo\homework1\homework1\targetver.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 f:\myrepo\homework1\homework1\sudo.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-f:\myrepo\homework1\homework1\sudo.h(42): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\stdio.h(207): note: 参见“fopen”的声明
     正在创建库 F:\myrepo\homework1\Debug\UnitTest1.lib 和对象 F:\myrepo\homework1\Debug\UnitTest1.exp
   UnitTest1.vcxproj -> F:\myrepo\homework1\Debug\UnitTest1.dll
   UnitTest1.vcxproj -> F:\myrepo\homework1\Debug\UnitTest1.pdb (Partial PDB)

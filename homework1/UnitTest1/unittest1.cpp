@@ -5,62 +5,126 @@
 #include <string>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-extern int* matrixarray[1000000];
-extern int array[8];
+struct Node {
+	int num;
+	struct Node* next[9];
+};
+typedef struct Node point;
+point *head;
 namespace UnitTest1
 {		
 	TEST_CLASS(UnitTest1)
 	{
 	public:
 		
-		TEST_METHOD(TestCanInsert)
-		{
-			/*
-			1.有没有填
-			2.如果没有填，看这一行和这一列有没有相同的数字
-			3.如果这一行和这一列都没有相同的数字，就返回1，其他情况返回0
-			所用矩阵：
-			0 0 0 0 0 0 0 3 9
-			0 0 0 0 0 1 0 0 5
-			0 0 3 0 5 0 8 0 0
-			0 0 8 0 9 0 0 0 6
-			0 7 0 0 0 2 0 0 0
-			1 0 0 4 0 0 0 0 0
-			0 0 9 0 8 0 0 5 0
-			0 2 0 0 0 0 6 0 0
-			4 0 0 7 0 0 0 0 0
-			因为生成算法这里不检查一个九宫格里的重复性。
-			*/
-
-			/*
-			这里一开始一直调试的时候c读不到数，原来是因为puzzle.txt是个空文件
-			而且这里调试时用的puzzle.txt是来自homework1/Debug里的，具体原因还很模糊
-			不过现在先不管了。
-			*/
-			int matrix[9][9] = {0};
-			char c;
-			std::fstream infile("puzzle.txt",std::ios::in);
-			for (int i = 0; i < 81; i++) {
-				infile >> c;
-				matrix[i / 9][i % 9] = c - '0';
-			}
-			//选择一个已经填的位置
-			Assert::AreEqual(sudo::canInsert(2,2,3,matrix),0);
-			//如果没填，看这一行和这一列
-			Assert::AreEqual(sudo::canInsert(1,7,3,matrix),0);
-			Assert::AreEqual(sudo::canInsert(1,0,1,matrix),0);
-			Assert::AreEqual(sudo::canInsert(6,8,5,matrix),0);
-			//如果可以填
-			Assert::AreEqual(sudo::canInsert(0,0,2,matrix),1);
-			infile.close();
-		}
-
 		
+
+		/*如果发现你的编译一直有LINK2019错误，是因为你没有把原来的文件设置为lib..*/
 		TEST_METHOD(TestCreate)
 		{
-			sudoCreate creater = sudoCreate(10);
-			//creater.choose(0,0,fp);
+			int* matrixarray[100000];
+			int array[8] = { 1,2,4,5,6,7,8,9 };
+			head = (point *)malloc(sizeof(point));
+			memset(head,0,sizeof(point));
+			sudoCreate creater = sudoCreate(100000, matrixarray);
 			creater.generateMatrix(array, 0, 8);
+			bool gloabelflag = false;
+			int i = 0;
+			for ( i ; i < 100000; i++) {
+				int *matrix = matrixarray[i];
+				point *p = head;
+				bool flag = true;
+				for (int j = 0; j < 72; j++) {
+					int num = matrix[j];
+					if (p->next[num-1] == NULL) {
+						point *q = (point *)malloc(sizeof(point));
+						memset(q,0,sizeof(point));
+						q->num = num;
+						p->next[num-1] = q;
+						flag = false;
+						break;
+					}
+					p = p->next[num-1];
+
+				}
+				if (flag == true)
+				{
+					int num = i;
+					break;
+				}
+			}
+			
+			Assert::AreEqual(i, 100000);
+
 		}
+		TEST_METHOD(TestSwap) {
+
+			int a = 5;
+			int b = 6;
+			sudoCreate::swap(&a, &b);
+			Assert::AreEqual(a,6);
+			Assert::AreEqual(b,5);
+		}
+		TEST_METHOD(TestcanFill) {
+
+			int *matrixarray[100];
+			int matrix[9][9] = {
+				{0,0,5,3,0,0,0,0,0},
+				{8,0,0,0,0,0,0,2,0},
+				{0,7,0,0,1,0,5,0,0},
+				{4,0,0,0,0,5,3,0,0},
+				{0,1,0,0,7,0,0,0,6},
+				{0,0,3,2,0,0,0,8,0},
+				{0,6,0,5,0,0,0,0,9},
+				{0,0,4,0,0,0,0,3,0},
+				{0,0,0,0,0,9,7,0,0}
+
+			};
+			sudoSolver solver = sudoSolver(matrix,matrixarray);
+			Assert::AreEqual(solver.canFill(0,0,5),false);
+			Assert::AreEqual(solver.canFill(0,0,3),false);
+			Assert::AreEqual(solver.canFill(0,0,4),false);
+			Assert::AreEqual(solver.canFill(0,0,1),true);
+			/*rowarray not initial ,dont use gloabal var*/
+		}
+		TEST_METHOD(TestFillin) {
+			int *matrixarray[100];
+			int matrix[9][9] = {
+				{ 0,0,5,3,0,0,0,0,0 },
+				{ 8,0,0,0,0,0,0,2,0 },
+				{ 0,7,0,0,1,0,5,0,0 },
+				{ 4,0,0,0,0,5,3,0,0 },
+				{ 0,1,0,0,7,0,0,0,6 },
+				{ 0,0,3,2,0,0,0,8,0 },
+				{ 0,6,0,5,0,0,0,0,9 },
+				{ 0,0,4,0,0,0,0,3,0 },
+				{ 0,0,0,0,0,9,7,0,0 }
+
+			};
+			sudoSolver solver = sudoSolver(matrix, matrixarray);
+			solver.fillin(0, 0, 1);
+			Assert::AreEqual(solver.getMatrix()[0],1);
+			Assert::AreEqual(solver.canFill(0,0,1),false);
+		}
+		TEST_METHOD(TestErase) {
+			int *matrixarray[100];
+			int matrix[9][9] = {
+				{ 0,0,5,3,0,0,0,0,0 },
+				{ 8,0,0,0,0,0,0,2,0 },
+				{ 0,7,0,0,1,0,5,0,0 },
+				{ 4,0,0,0,0,5,3,0,0 },
+				{ 0,1,0,0,7,0,0,0,6 },
+				{ 0,0,3,2,0,0,0,8,0 },
+				{ 0,6,0,5,0,0,0,0,9 },
+				{ 0,0,4,0,0,0,0,3,0 },
+				{ 0,0,0,0,0,9,7,0,0 }
+
+			};
+			sudoSolver solver = sudoSolver(matrix, matrixarray);
+			solver.erase(0, 2, 5);
+			Assert::AreEqual(solver.getMatrix()[2], 0);
+			Assert::AreEqual(solver.canFill(0, 2, 5), true);
+		}
+		
 	};
 }

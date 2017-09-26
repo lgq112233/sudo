@@ -4,7 +4,7 @@
 
 extern int rowarray[9][9];
 extern int colarray[9][9];
-extern int *matrixarray[1000000];
+//extern int *matrixarray[1000000];
 extern void print(int *matrix);
 
 const int sudoCreate::numarray[9] = { 3,4,5,6,7,8,9,1,2 };
@@ -19,7 +19,7 @@ const int sudoCreate::map[81] = {
 	8,9,7,2,1,4,3,6,5,
 	5,3,1,6,4,2,9,7,8,
 	6,4,2,9,7,8,5,3,1,
-	9,7,8,5,3,1,6,4,2,
+	9,7,8,5,3,1,6,4,2
 };
 /*****************************************************
 Description:
@@ -32,10 +32,11 @@ Concrete Function:
 	1.初始化matrix矩阵，填0
 	2.初始化line column数组，便于第一种生成算法的可填性的判断
 ******************************************************/
-sudoCreate::sudoCreate(int num)
+sudoCreate::sudoCreate(int num,int **matrixarray)
 {
 	this->num = num;
 	this->count = 0;
+	this->matrixarray = matrixarray;
 	for (int i = 0; i < 9; i++)
 		for (int j = 0; j < 9; j++)
 		{
@@ -97,7 +98,7 @@ Concrete Function:
 	交换两个指针位置上的数字的值
 ******************************************************/
 
-void sudoCreate::swap(int *a ,int *b) {
+ void sudoCreate::swap(int *a ,int *b) {
 	int temp;
 	temp = *b;
 	*b = *a;

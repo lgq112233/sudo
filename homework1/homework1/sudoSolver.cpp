@@ -2,25 +2,28 @@
 #include "sudoSolver.h"
 #include "sudo.h"
 
-extern int rowarray[9][9];
 extern void print(int *matrix);
-extern int *matrixarray[1000000];
 extern int count;
-void sudoSolver::fill()
-{
-	this->solve(0);
-}
 
-sudoSolver::sudoSolver(int matrix[9][9])
+sudoSolver::sudoSolver(int matrix[9][9],int **matrixarray)
 {
 	//一开始忘了初始化maxempty了
 	this->maxempty = 0;
 	this->solved = false;
+	this->matrixarray = matrixarray;
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			this->rowarray[i][j] = (i / 3) * 3 + j / 3;
+		}
+	}
 	for(int i=0;i<9;i++)
 		for (int j = 0; j < 9; j++) {
 			this->matrix[i][j] = matrix[i][j];
 			this->line[i][j] = this->column[i][j] = this->grid[i][j] = true;
 		}
+	for (int i = 0; i < 81; i++) {
+		std::cout << this->grid[i / 9][i % 9] << std::endl;
+	}
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			int num = this->matrix[i][j];
@@ -56,6 +59,7 @@ sudoSolver::sudoSolver(int matrix[9][9])
 			}
 		}
 	}
+
 	for (int i = 0; i < 81; i++) {
 		int num = matrix[i / 9][i % 9];
 		if (num == 0) {
@@ -63,6 +67,7 @@ sudoSolver::sudoSolver(int matrix[9][9])
 			this->cchoice[maxempty++] = i%9;
 		}
 	}
+
 }
 
 
@@ -81,7 +86,7 @@ void sudoSolver:: solve(int arrayindex) {
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 9; j++)
 				newmatrix[i * 9 + j] = this->matrix[i][j];
-		matrixarray[count] = newmatrix;
+		this->matrixarray[count] = newmatrix;
 		count++;
 		return;
 	}
@@ -129,3 +134,10 @@ bool sudoSolver::getSolved() {
 	std::cout << std::endl;
 }*/
  
+int* sudoSolver:: getMatrix() {
+	int *mat = (int *)malloc(81*sizeof(int ));
+	for (int i = 0; i < 81; i++) {
+		mat[i] = this->matrix[i / 9][i % 9];
+	}
+	return mat;
+}

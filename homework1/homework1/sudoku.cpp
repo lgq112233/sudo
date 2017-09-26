@@ -68,7 +68,7 @@ int main(int argc,char* argv[])
 					break;
 				}
 				FILE* fp = fopen("sudoku.txt", "w");
-				sudoCreate creater = sudoCreate(num);
+				sudoCreate creater = sudoCreate(num,matrixarray);
 				//creater.choose(0,0,fp);
 				creater.generateMatrix(array, 0, 8);
 				sudo::print(matrixarray, num);
@@ -122,8 +122,8 @@ void readAndSolve(char *filepath) {
 		matrix[i / 9][i % 9] = temp;
 		i++;
 		if (i == 81) {
-			sudoSolver* solver = new sudoSolver(matrix);
-			solver->fill();
+			sudoSolver* solver = new sudoSolver(matrix,matrixarray);
+			solver->solve(0);
 			if (!solver->getSolved()) {
 				std::cout << "no solution" << std::endl;
 			}
