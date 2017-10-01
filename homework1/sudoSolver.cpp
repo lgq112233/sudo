@@ -58,7 +58,8 @@ sudoSolver::sudoSolver(int matrix[9][9],int **matrixarray)
 	}
 
 	for (int i = 0; i < 81; i++) {
-		int num = matrix[i / 9][i % 9];
+		//这个是个问题
+		int num =this->matrix[i / 9][i % 9];
 		if (num == 0) {
 			this->rchoice[maxempty] = i/9;
 			this->cchoice[maxempty++] = i%9;
