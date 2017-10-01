@@ -1,0 +1,11 @@
+﻿  stdafx.cpp
+f:\myrepo\homework1\unittest1\stdafx.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+f:\myrepo\homework1\unittest1\stdafx.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+f:\myrepo\homework1\unittest1\targetver.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  unittest1.cpp
+f:\myrepo\homework1\homework1\stdafx.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+f:\myrepo\homework1\homework1\targetver.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+f:\myrepo\homework1\homework1\sudo.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+    正在创建库 F:\myrepo\homework1\Debug\UnitTest1.lib 和对象 F:\myrepo\homework1\Debug\UnitTest1.exp
+  UnitTest1.vcxproj -> F:\myrepo\homework1\Debug\UnitTest1.dll
+  UnitTest1.vcxproj -> F:\myrepo\homework1\Debug\UnitTest1.pdb (Partial PDB)
